@@ -44,22 +44,32 @@ public class EmojAdater extends RecyclerView.Adapter<EmojAdater.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.image.setImageResource(list.get(position).getIcon());
+        final Emojicon emoj = list.get(position);
+        holder.image.setImageResource(emoj.getIcon());
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //获取光标位置
                 int index = etContent.getSelectionStart();
                 Editable editable = etContent.getText();
-                editable.insert(index,list.get(position).getName());
-                SpannableString msp=new SpannableString(etContent.getText());
-                Drawable drawable = mContent.getResources().getDrawable(list.get(position).getIcon());
+                //获取表情的名字
+                String emojName = "@#$%^&" + emoj.getName();
+                editable.insert(index, emojName);
+
+                //计算表情的结束位置
+                int endIndex = index + emojName.length();
+
+                SpannableString msp = new SpannableString(etContent.getText());
+                Drawable drawable = mContent.getResources().getDrawable(emoj.getIcon());
                 drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-                msp.setSpan(new ImageSpan(drawable), index, index+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                msp.setSpan(new ImageSpan(drawable), index, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 etContent.setText(msp);
-
-
+                //修正当前光标位置
+                etContent.setSelection(endIndex);
+                //Log.e("tag", etContent.getText().toString());
             }
         });
     }

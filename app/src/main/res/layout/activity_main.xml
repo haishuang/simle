@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:minHeight="120dp"
         android:layout_above="@+id/bottom"
-        android:visibility="visible"
+        android:visibility="invisible"
         />
 
     <View
